@@ -1,4 +1,5 @@
 # lab_recap-building-dynamic-react-app
+
 ![logo_ironhack_blue 7](https://user-images.githubusercontent.com/23629340/40541063-a07a0a8a-601a-11e8-91b5-2f13e4e6b441.png)
 
 # LAB | Building a Dynamic React App
@@ -75,8 +76,8 @@ First, we need a new React project. We'll use Vite for a fast and modern setup.
     In your terminal, navigate to where you want to create your project and run the following command. Name your project `lab-react-product-list`.
 
     ```shell
-    # Creates a new Vite project with a React + TypeScript template
-    $ npm create vite@latest lab-react-product-list -- --template react-ts
+    # Creates a new Vite project with a React template
+    $ npm create vite@latest lab-react-product-list -- --template react
     ```
 
 2.  **Navigate into the project and install dependencies.**
@@ -90,11 +91,11 @@ First, we need a new React project. We'll use Vite for a fast and modern setup.
     Open the project in your code editor. We want to start fresh.
 
     - Delete everything inside `src/App.css`.
-    - Replace the content of `src/App.tsx` with a basic functional component:
+    - Replace the content of `src/App.jsx` with a basic functional component:
 
-    ```tsx
-    // src/App.tsx
-    import "./App.css";
+    ```jsx
+    // src/App.jsx
+    import './App.css';
 
     function App() {
       return (
@@ -123,7 +124,7 @@ First, we need a new React project. We'll use Vite for a fast and modern setup.
 Now, let's fetch some data from the [DummyJSON API](https://dummyjson.com/) and display it.
 
 1.  **Create state for products.**
-    In `src/App.tsx`, import the `useState` and `useEffect` hooks from React. Then, create a piece of state to hold the array of products. The initial state should be an empty array.
+    In `src/App.jsx`, import the `useState` and `useEffect` hooks from React. Then, create a piece of state to hold the array of products. The initial state should be an empty array.
 
 2.  **Fetch data with `useEffect`.**
     Use a `useEffect` hook to fetch the products when the component first mounts.
@@ -141,30 +142,22 @@ Now, let's fetch some data from the [DummyJSON API](https://dummyjson.com/) and 
 <details>
   <summary>Click for Solution</summary>
 
-```tsx
-// src/App.tsx
-import { useState, useEffect } from "react";
-import "./App.css";
-
-// Define a type for our product for better type-checking
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  thumbnail: string;
-}
+```jsx
+// src/App.jsx
+import { useState, useEffect } from 'react';
+import './App.css';
 
 function App() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://dummyjson.com/products");
+        const response = await fetch('https://dummyjson.com/products');
         const data = await response.json();
         setProducts(data.products);
       } catch (error) {
-        console.error("Failed to fetch products:", error);
+        console.error('Failed to fetch products:', error);
       }
     };
 
@@ -175,7 +168,7 @@ function App() {
     <div className="App">
       <h1>My Product List</h1>
       <ul>
-        {products.map((product) => (
+        {products.map(product => (
           <li key={product.id}>{product.title}</li>
         ))}
       </ul>
@@ -197,40 +190,29 @@ Displaying just the title is a bit boring. Let's create a dedicated component to
 1.  **Create the `ProductCard` component.**
 
     - Create a new folder `src/components`.
-    - Inside it, create a new file `ProductCard.tsx`.
-    - This component should accept a single product object as a prop. Use TypeScript to define the shape of the prop.
+    - Inside it, create a new file `ProductCard.jsx`.
+    - This component should accept a single product object as a prop.
     - The component should render the product's image (`thumbnail`), `title`, and `price`.
 
 2.  **Style the `ProductCard`.**
 
     - Create a new CSS file `src/components/ProductCard.css` and add some basic styles to make it look like a card (e.g., border, padding, box-shadow).
-    - Import this CSS file into your `ProductCard.tsx` component.
+    - Import this CSS file into your `ProductCard.jsx` component.
 
-3.  **Use the `ProductCard` in `App.tsx`.**
-    - In `App.tsx`, import your new `ProductCard` component.
+3.  **Use the `ProductCard` in `App.jsx`.**
+    - In `App.jsx`, import your new `ProductCard` component.
     - Instead of rendering an `<li>`, map over your `products` state and render a `<ProductCard>` for each product, passing the `product` object as a prop.
     - Wrap the list of cards in a container `div` and add some flexbox styles in `App.css` to arrange them in a grid.
 
 <details>
   <summary>Click for Solution</summary>
 
-**`src/components/ProductCard.tsx`**
+**`src/components/ProductCard.jsx`**
 
-```tsx
-import "./ProductCard.css";
+```jsx
+import './ProductCard.css';
 
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  thumbnail: string;
-}
-
-interface ProductCardProps {
-  product: Product;
-}
-
-function ProductCard({ product }: ProductCardProps) {
+function ProductCard({ product }) {
   return (
     <div className="product-card">
       <img src={product.thumbnail} alt={product.title} />
@@ -265,27 +247,20 @@ export default ProductCard;
 }
 ```
 
-**`src/App.tsx` (updated)**
+**`src/App.jsx` (updated)**
 
-```tsx
-import { useState, useEffect } from "react";
-import "./App.css";
-import ProductCard from "./components/ProductCard"; // Import the component
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  thumbnail: string;
-}
+```jsx
+import { useState, useEffect } from 'react';
+import './App.css';
+import ProductCard from './components/ProductCard'; // Import the component
 
 function App() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     // ... fetch logic remains the same
     const fetchProducts = async () => {
-      const response = await fetch("https://dummyjson.com/products");
+      const response = await fetch('https://dummyjson.com/products');
       const data = await response.json();
       setProducts(data.products);
     };
@@ -296,7 +271,7 @@ function App() {
     <div className="App">
       <h1>My Product List</h1>
       <div className="product-container">
-        {products.map((product) => (
+        {products.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
@@ -328,7 +303,7 @@ export default App;
 When the app first loads, there's a brief moment where no products are shown. Let's add a loading indicator to give the user feedback that something is happening.
 
 1.  **Create a loading state.**
-    In `App.tsx`, add a new piece of state called `loading`, initialized to `true`.
+    In `App.jsx`, add a new piece of state called `loading`, initialized to `true`.
 
 2.  **Update the loading state.**
 
@@ -345,31 +320,24 @@ When the app first loads, there's a brief moment where no products are shown. Le
 <details>
   <summary>Click for Solution</summary>
 
-```tsx
-// src/App.tsx (updated with loading state)
-import { useState, useEffect } from "react";
-import "./App.css";
-import ProductCard from "./components/ProductCard";
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  thumbnail: string;
-}
+```jsx
+// src/App.jsx (updated with loading state)
+import { useState, useEffect } from 'react';
+import './App.css';
+import ProductCard from './components/ProductCard';
 
 function App() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // New loading state
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true); // New loading state
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://dummyjson.com/products");
+        const response = await fetch('https://dummyjson.com/products');
         const data = await response.json();
         setProducts(data.products);
       } catch (error) {
-        console.error("Failed to fetch products:", error);
+        console.error('Failed to fetch products:', error);
       } finally {
         setLoading(false); // Set loading to false in both cases
       }
@@ -385,7 +353,7 @@ function App() {
         <p>Loading products...</p>
       ) : (
         <div className="product-container">
-          {products.map((product) => (
+          {products.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
